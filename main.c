@@ -3,30 +3,37 @@
 #include <locale.h> 
 #include <string.h>
 
-char paciente[50];
-
-int menucontrole = 0;
+int menucontrole = 1;
 int tam = 50;
-int ini = -1;
-int fim = -1;
-
-// fila pro verde | fila pro amarelo 2 filas . 	
+int ini , fim=8;
+int tamfilaAmarela = 5;
+int tamfilaVerde = 5;
 
 struct Paciente{
-    char nome[50]; //salva o nome do paciente na fila
-    char prioridade; //salva a prioridade do paciente  
-    int posicaoGeral; // salva a posição do paciente da fila por ordem de chegada.
-		int posicaoPrioridade; // salva a posiçaõ do paciente pela prioridade V ou A
-};
+  char nome[50];//salva o nome do paciente na fila
+	char sobrenome[50];//salvar o sobrenome 
+  char prioridade[50]; //salva a prioridade do paciente   V ou A
+  int posicaoGeral[50]; // salva a posição do paciente da fila por ordem de chegada.
+	int posicaoPrioridadeVerde[50];// salva a posição do paciente pela prioridade Verde
+	int posicaoPrioridadeAmarela[50];// salva a posição do paciente pela prioridade Amarela
+} ;
 
 typedef struct Paciente Paciente;
 
-// o vetor salva os pacientes por ordem de chegada.
-// para pegar a ordem por prioridade usamos um if para prioridade , pega a posição da fila 
-//ana - v - 1 \ flavio - a - 10 \ pedro - v - 30 
-// fila por chegada | fila verde | fila amarela.
-// passagem por atribuição , passagem por definição | define o  valor e sobrescreve o original | passa o valor por copia e não mexe na original.
-// char *c; int *d ; float *f
+Paciente cadastro[50];
+
+// sistema de cores
+#define VERDE  "\x1b[32m"
+#define AMARELO "\x1b[93m"
+#define VERMELHO "\x1b[31m"
+#define AZUL "\x1b[34m"
+#define RESET "\x1b[0m"
+
+
+void criaFila(int *ini, int *fim){
+    (*ini) = -1;
+    (*fim) = 0;
+}
 
 void Cadastrar(){
 	int menucontrole = 0;
@@ -35,176 +42,235 @@ void Cadastrar(){
 	printf("--------- Cadastro ---------- \n");
 	printf("Cadastrar novo Paciente :\n");
 	printf("Qual o nome do Paciente ?\n");
-	printf("Digite o nome: ");
-	scanf ("%[^\n]", NomePaciente.nome);
-	  __fpurge(stdin);		
-	
-	printf("\n Qual a urgência do paciente ?\n");
+	printf("Digite o nome e sobrenome: ");
+	scanf(" %s%s", NomePaciente.nome , NomePaciente.sobrenome);
+	printf("Qual a urgência do paciente ?\n");
 	printf("V - Verde | A - Amarelo \n");
 	printf("Digite a urgência: ");
-    __fpurge(stdin);
 	scanf(" %c", &escolha);
 			
 	  switch(escolha)
 		{
 			case 'V':
       case 'v':
-				//system("color 2F");
-				printf("--------- Prioridade Verde ---------- \n");
-				printf("Prioridade definida como Verde! \n");
-				printf("-------------------------------------- \n");
-				 
+				printf(VERDE"--------- Prioridade Verde ---------- \n");
+				printf(VERDE"Prioridade definida como Verde! \n");
+				printf(VERDE"-------------------------------------- \n" RESET);
 			break;
 
       case 'A':
       case 'a':
-        //system("color 6F");
-        printf("--------- Prioridade Amarela ---------- \n");
-				printf("Prioridade definida como Amarela! \n");
-				printf("-------------------------------------- \n");
-				 
-        break;
+        printf(AMARELO"--------- Prioridade Amarela ---------- \n");
+				printf(AMARELO"Prioridade definida como Amarela! \n");
+				printf(AMARELO"-------------------------------------- \n" RESET);
+      break;
 			
       default:
-				printf("--------- Erro ---------- \n");
+				printf(VERMELHO"--------- Erro ---------- \n");
 				printf("Nosso sistema só aceita A ou V como níveis de prioridade! \n");
-				printf("-------------------------------------- \n");
-				
+				printf("-------------------------------------- \n" RESET);
 		}
 }
 void Remover(){
-  int menucontrole = 0;
+  menucontrole = 0;
   char escolha = ' ';
 	char nome = ' ';
+	struct Paciente Paciente;
 	printf("--------- Remover Paciente da Fila ---------- \n");
-	printf("Remover Paciente :\n");
-	printf("Qual o nome do Paciente ?\n");
-	printf("Digite o nome: ");
-	scanf("%c", &nome);
+	printf("Qual a posição geral do paciente :\n");
+	printf("Digite a posição: ");
+	scanf("%d", Paciente.posicaoGeral);
 	printf("Qual a urgência do paciente ?\n");
-	printf("Digite a urgência: ");
 	printf("V - Verde | A - Amarelo \n");
- 	scanf("%c" , &escolha);
+	printf("Digite a urgência: ");
+ 	scanf(" %c", &escolha);
 
 	 	switch(escolha)
 		{
 			case 'V':
       case 'v':
 				printf("--------- Prioridade Verde ---------- \n");
-				printf("Prioridade definida como Verde! \n");
+				printf("Qual o nome do Paciente ?\n");
+				scanf(" %s%s", Paciente.nome , Paciente.sobrenome);
+				printf("Qual o numero do paciente de acordo com essa prioridade ?\n");
+				printf("Digite o numero: ");
+				scanf(" %d", Paciente.posicaoGeral);
 				printf("-------------------------------------- \n");
 			break;
 
       case 'A':
       case 'a':
         printf("--------- Prioridade Amarela ---------- \n");
-				printf("Prioridade definida como Amarela! \n");
+				printf("Qual o nome do Paciente ?\n");
+				scanf(" %s%s", Paciente.nome , Paciente.sobrenome);
+				printf("Qual o numero do paciente de acordo com essa prioridade ?\n");
+				printf("Digite o numero: ");
+				scanf(" %d", Paciente.posicaoGeral);
 				printf("-------------------------------------- \n");
       break;
 			
       default:
-				printf("--------- Erro ---------- \n");
+				printf(VERMELHO"--------- Erro ---------- \n");
 				printf("Nosso sistema só aceita A ou V como níveis de prioridade! \n");
 				printf("-------------------------------------- \n");
 		}
 }
 void Pesquisar(){
-  int menucontrole = 0;
-	printf("--------- Consultar Fila ---------- \n");
+  menucontrole = 0;
+	struct Paciente Paciente;
+	printf(AZUL"<------------ Consultar Fila -------> \n" RESET);
 	char escolha = ' ';
 	char nome = ' ';
 	printf("Qual o nome do Paciente ?\n");
 	printf("Digite o nome: ");
-	scanf("%c", &nome);
+	scanf(" %s%s", Paciente.nome , Paciente.sobrenome);
 	printf("Qual a urgência do paciente ?\n");
 	printf("Digite a urgência: ");
 	printf("V - Verde | A - Amarelo \n");
- 	scanf("%c" , &escolha);
+ 	scanf(" %c", &escolha);
 
 	 	switch(escolha)
 		{
 			case 'V':
       case 'v':
-				printf("--------- Prioridade Verde ---------- \n");
+				printf(VERDE"--------- Prioridade Verde ---------- \n" RESET);
 				//busca na fila somente os pacientes com a prioridade verde
+				printf("Esse usuario esta como: \n");
+				printf(" Nome: ");
+				printf("%s", Paciente.nome);
+				printf(" \n ");
+				printf("Sobrenome: ");
+				printf("%s", Paciente.sobrenome);
+				printf(" \n ");
+				printf("Prioridade: ");
+				printf("%s", Paciente.prioridade);
+				printf(" \n ");
+				printf("Posição Geral: ");
+				printf("%d", Paciente.posicaoGeral);
+				printf(" \n ");
+				printf("Posição por prioridade: ");
+				printf("%d", Paciente.posicaoPrioridadeVerde);
+				printf(" \n ");
+				printf(VERDE"-------------------------------------- \n" RESET);
 			
 			break;
 
       case 'A':
       case 'a':
-        printf("--------- Prioridade Amarela ---------- \n");
+        printf(AMARELO"--------- Prioridade Amarela ---------- \n" RESET);
 				//busca na fila somente os pacientes com a prioridade amarela
-				
+				printf("Esse usuario esta como: \n");
+				printf(" Nome: ");
+				printf("%s", Paciente.nome);
+				printf(" \n ");
+				printf("Sobrenome: ");
+				printf("%s", Paciente.sobrenome);
+				printf(" \n ");
+				printf("Prioridade: ");
+				printf("%s", Paciente.prioridade);
+				printf(" \n ");
+				printf("Posição Geral: ");
+				printf("%d", Paciente.posicaoGeral);
+				printf(" \n ");
+				printf("Posição por prioridade: ");
+				printf("%d", Paciente.posicaoPrioridadeAmarela);
+				printf(" \n ");
+				printf(AMARELO"-------------------------------------- \n" RESET);
       break;
 			
       default:
-				printf("--------- Erro ---------- \n");
+				printf(VERMELHO"--------- Erro ---------- \n" RESET);
 				printf("Nosso sistema só aceita A ou V como níveis de prioridade! \n");
 				printf("-------------------------------------- \n");
 			}
 		
 }
 void VfilaCompleta(){
-  int menucontrole = 0;
-	int f;
-	printf("--------- Visualizar Fila Completa ---------- \n");
+  menucontrole = 0;
+	struct Paciente Paciente;
+
+	printf(AZUL"--------- Visualizar Fila Completa ---------- \n" RESET);
 	// mostra a fila completa independente do nivel de prioridade
 	// criar um for que corre toda a fila e mostra no console o nome, prioridade e posição
 
 	if(ini == fim){
-		printf("--------- Fila Vazia! :( ---------- \n");
-		printf("nenhum paciente foi encontrado \n");
+		printf(VERMELHO"--------- Erro ---------- \n" RESET);
+		printf(" Fila Vazia! , nenhum paciente foi encontrado :(\n");
 		printf("-------------------------------------\n");
 		
 	}else{
-
-		for(f=0;f>49;f++){
-			// correr a fila e imprimir (nome , prioridade , posição na fila)
+			for(int i=0; i < tam; i++){
+					printf("%d" , i+1);
+					printf(" - ");
+					printf("%d" , paciente[i]);
+					printf(" \n ");
+				}
 		}
 	}
-}
+
 void VfilaTipoUrgencia(){
-  int menucontrole = 0;
-	printf("--------- Visualizar Tipo de Urgência ---------- \n");
+  menucontrole = 0;
+	printf(AZUL"--------- Visualizar Tipo de Urgência ---------- \n" RESET);
   // mostra a fila divida por nível de prioridade 
 
 	char escolha = ' ';
 	char nome = ' ';
+	struct Paciente Paciente;
 	printf("Qual o nome do Paciente ?\n");
 	printf("Digite o nome: ");
-	scanf("%c", &nome);
+	scanf(" %s%s", Paciente.nome , Paciente.sobrenome);
 	printf("Qual a urgência do paciente ?\n");
-	printf("Digite a urgência: ");
 	printf("V - Verde | A - Amarelo \n");
- 	scanf("%c" , &escolha);
+	printf("Digite a urgência: ");
+ 	scanf(" %c", &escolha);
 
 	 	switch(escolha)
 		{
 			case 'V':
       case 'v':
-				printf("--------- Prioridade Verde ---------- \n");
-				//busca na fila somente os pacientes com a prioridade verde
-				
-			
+				printf(VERDE"--------- Prioridade Verde ---------- \n" RESET);
+        if(tamfilaVerde == 0){
+					printf(VERMELHO "Erro ---> \n" RESET);
+					printf("A fila está vazia! :( \n");
+					printf("-------------------------------------- \n");
+					
+				}else{
+				for(int i=0; i < tamfilaVerde; i++){
+					printf("%d" , i);
+					printf(" - ");
+					printf("%d" , paciente[i]);
+					printf(" \n ");
+				}
+			}
 			break;
 
       case 'A':
       case 'a':
-        printf("--------- Prioridade Amarela ---------- \n");
-				//busca na fila somente os pacientes com a prioridade amarela
-				
+        printf(AMARELO"--------- Prioridade Amarela ---------- \n" RESET);
+				if(tamfilaAmarela == 0){
+					printf(VERMELHO"Erro ---> \n" RESET);
+					printf("A fila está vazia! :( \n");
+					printf("-------------------------------------- \n");
+				}else{
+				for(int i=0; i < tamfilaAmarela; i++){
+					printf("%d" , i);
+					printf(" - ");
+					printf("%d" , paciente[i]);
+					printf(" \n ");
+				}
+			}
       break;
 			
       default:
-				printf("--------- Erro---------- \n");
+				printf(VERMELHO"--------- Erro---------- \n" RESET);
 				printf("Nosso sistema só aceita A ou V como níveis de prioridade! \n");
-				printf("-------------------------------------- \n");
+				printf("-------------------------------------- \n" );
 		}
   }
 	
 void ConsultarFila(){
   int menucontrole = 0;
-	printf("--------- Consultar Fila ---------- \n");
+	printf(AZUL"--------- Consultar Fila ---------- \n" RESET);
 // mostra o tamanho da fila , quais a posições ocupadas , quais as posições livres na fila.
 }
 
@@ -212,7 +278,7 @@ void Menu(){
   int i;
 
 	do{
-		printf("--------- Menu ---------- \n");
+		printf(VERDE"--------------------- Menu ---------------- \n" RESET);
 		printf("1 - Cadastrar Paciente \n");
 		printf("2 - Remover Paciente \n");
 		printf("3 - Pesquisar Paciente por nivel de urgência \n");
@@ -220,46 +286,38 @@ void Menu(){
  	 	printf("5 - Visualizar fila por tipo de urgência \n");
   	printf("6 - Consultar situação da fila \n");
 		printf("Digite uma Opção: ");
-		scanf("%d" , &i);
+		scanf("%d", &i);
+		printf(VERDE"---------------------------------------- \n" RESET);
 
 			switch(i)
 		{
       case 1:
 				Cadastrar();
 			break;
-
       case 2:
 				Remover();
       break;
-
       case 3:
 				Pesquisar();
       break;
-
       case 4:
 				VfilaCompleta();
       break;
-
       case 5:
       	VfilaTipoUrgencia();
       break;
-
       case 6:
           ConsultarFila();
         break;
-      
       default: 
-				printf("---------- Erro! ---------- \n");
-        printf("Opção inválida! :( \n Tente novamente! \n");
-				printf("---------------------------- \n");
-				menucontrole =1;
-				
+				printf(VERMELHO"---------- Erro! ---------- \n");
+        printf("Opção inválida! :( \nTente novamente! \n");
+				printf("---------------------------- \n" RESET);
 		}
-		
 	}while(menucontrole ==1); 
 }
 
-int main(void){ // chama o menu
+int main(void){ 
 	setlocale (LC_ALL,"portuguese"); // define o idioma do projeto como portugês brasil
-	Menu();
+	Menu(); // chama o menu
 }
