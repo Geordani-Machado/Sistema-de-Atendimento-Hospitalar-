@@ -4,6 +4,9 @@ Projeto desenvolvido durante graduação na cadeira de Estrutura de Dados
 
 
  - Fluxo lógico da aplicação:
+ - sistema cadastra pacientes por níveis de prioridade.
+ - mostra pacientes por níveis de prioridade , por posição geral da fila e por posição de acordo comoa sua prioridade no sistema.
+  - sistema remove da fila  primeiro os pacientes como prioridade alta (prioridade amarela), para posteriormente remover os pacientes com prioridade normal(prioridade verde).
    <br/> 
    
 
@@ -18,3 +21,5 @@ Projeto desenvolvido durante graduação na cadeira de Estrutura de Dados
 Projeto Licença MIT.   
 
 Sistema desenvolvido com muito ❤️☕ por [Geordani Machado](https://github.com/Geordani-Machado) & [Gabriela Von](https://github.com/G4bizinha)
+
+- ❗ Não é gambiarra, é uma solução alternativa não oficial. 

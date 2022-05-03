@@ -114,12 +114,14 @@ void Remover(){
 
 	if(filaAmarela != 0){
 		filaAmarela--; 
+		iniAmarelo++;
 	}else if (filaVerde != 0){
 		filaVerde--;
+		iniVerde++;
 	}
 
 		if(tam == 0){
-		 printf(VERMELHO" Fila Vazia! :(");
+		 printf(VERMELHO" Fila Vazia! :( \n");
 		}else{
 			ini++;
 			
@@ -150,7 +152,7 @@ void Pesquisar(){
 			case 'V':
       case 'v':
 
-				if(cadastro->nome == nome && cadastro->prioridade == 'v' || cadastro->nome == nome && cadastro->prioridade == 'V' ){
+		if(cadastro->nome == nome && cadastro->prioridade == 'v' || cadastro->nome == nome && cadastro->prioridade == 'V' ){
 
 							printf("Esse usuario esta como: \n");
 							printf(" Nome: ");
@@ -286,14 +288,14 @@ void VfilaTipoUrgencia(){
 					printf("A fila está vazia! :( \n");
 					printf("-------------------------------------- \n");
 					}else{
-						for(int a=iniVerde ; a < 70; a++){
-						printf("%d" , indice2+1);
+						for(int a=iniVerde ; a < 50; a++){
+						printf("%d" , indice2+1); 
 						printf(" - ");
 						printf("%s" , cadastro[a-1].nome); 
 						printf(" - ");
 						printf("%s" , cadastro[a-1].sobrenome);
 						printf("\n");
-						a++;
+						iniVerde++;
 						indice2++;
 			}
 		}
@@ -302,22 +304,23 @@ void VfilaTipoUrgencia(){
       case 'A':
       case 'a':
         printf(AMARELO"--------- Prioridade Amarela ---------- \n" RESET);
-				if(tamfilaAmarela == 0){
-					printf(VERMELHO"Erro ---> \n" RESET);
-					printf("A fila está vazia! :( \n");
-					printf("-------------------------------------- \n");
-				}else{
-				for(int i=0; i < 24; i++){
+				if(tamfilaAmarela != 0){
+					
+					for(int i=iniAmarelo; i <= 23; i++){
 						printf("%d" , indice1+1);
 						printf(" - ");
 						printf("%s" , cadastro[i].nome); 
 						printf(" - ");
 						printf("%s" , cadastro[i].sobrenome);
 						printf("\n");
-						ini++;
+						iniAmarelo++;
 						indice1++;
 					}
 					
+				}else{
+					printf(VERMELHO"Erro ---> \n" RESET);
+					printf("A fila está vazia! :( \n");
+					printf("-------------------------------------- \n");	
 			}
 				
       break;
