@@ -1,11 +1,11 @@
- # Sistema de controle Hospitalar com niveis de prioridade
+ # Sistema de Controle Hospitalar com Níveis de Prioridade
 Projeto Dia 03 <br/>
 Projeto desenvolvido durante graduação na cadeira de Estrutura de Dados
 
 
  - Fluxo lógico da aplicação:
  - sistema cadastra pacientes por níveis de prioridade.
- - mostra pacientes por níveis de prioridade , por posição geral da fila e por posição de acordo comoa sua prioridade no sistema.
+ - mostra pacientes por níveis de prioridade , por posição geral da fila e por posição de acordo com a sua prioridade no sistema.
   - sistema remove da fila  primeiro os pacientes como prioridade alta (prioridade amarela), para posteriormente remover os pacientes com prioridade normal(prioridade verde).
    <br/> 
    
