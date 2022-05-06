@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <locale.h> 
 #include <string.h>
+#include <unistd.h>
 
 int menucontrole = 1;
 int tam;
-int ini,fim;
+int ini,fim=49;
 int tamfilaAmarela = 0;
 int tamfilaVerde = 0;
-int error;
+int achou;
 int i=0;
 int prioridade;
 
@@ -44,11 +45,11 @@ void FilaVazia(){
 void Cadastrar(){
 	int menucontrole = 0;
 	char escolha = ' ';
-	printf("--------- Cadastro ---------- \n");
+	printf("--------- 📝Cadastro ---------- \n");
 	printf("Cadastrar novo Paciente :\n");
 	printf("Qual o nome do Paciente ?\n");
 	printf("Digite o nome e sobrenome: ");
-	scanf(" %s%s", cadastro[ini].nome , cadastro[ini].sobrenome);
+	scanf(" %s%s", cadastro[i].nome , cadastro[i].sobrenome);
 	printf("Qual a urgência do paciente ?\n");
 	printf(VERDE"V - Verde");
 	printf(RESET" | ");
@@ -62,47 +63,76 @@ void Cadastrar(){
 		{
 			case 'V':
       	case 'v':
-				printf(VERDE"--------- Prioridade Verde ---------- \n"RESET);
+				printf(VERDE"--------- 🟢Prioridade Verde🟢 ---------- \n"RESET);
 				printf(VERDE"Prioridade definida como Verde! \n"RESET);
 				printf(VERDE"-------------------------------------- \n \n \n" RESET);
 				printf(VERDE"--------- Sucesso ! ---------- \n");
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
-				cadastro[ini].prioridade = 'V';
-				cadastro[ini].posicaoPrioridadeVerde++;
-				ini++;
+				cadastro[i].prioridade = 'V';
+				cadastro[i].posicaoPrioridadeVerde = tamfilaVerde;
+				tamfilaVerde++;
 				break;
+      
       case 'A':
       	case 'a':
-        printf(AMARELO"--------- Prioridade Amarela ---------- \n" RESET);
+        printf(AMARELO"--------- 🟡Prioridade Amarela🟡 ---------- \n" RESET);
 				printf(AMARELO"Prioridade definida como Amarela! \n" RESET);
 				printf(AMARELO"-------------------------------------- \n \n \n" RESET);
 				printf(VERDE"--------- Sucesso ! ---------- \n");
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
-				cadastro[ini].prioridade = 'A';
-				cadastro[ini].posicaoPrioridadeAmarela++;
-				ini++;
+				cadastro[i].prioridade = 'A';
+				cadastro[i].posicaoPrioridadeAmarela = tamfilaAmarela;
+				tamfilaAmarela++;
       break;
       default:
 				Error();
-		}tam = tam +1; //switch
+		}
+	tam = tam +1; 
+	i = i+1;
 }//VOID CADASTRAR
 
 void Remover(){
   menucontrole = 0;
   char escolha = ' ';
 	char nome = ' ';
-	printf("--------- Remover Paciente da Fila ---------- \n");
+	printf("--------- 🚶🏻‍♂️Remover Paciente da Fila ---------- \n");
 
+	// a cada 3 pacientes com prioridade amarela o sistema remove 4 com prioridade verde
+
+	// se a prioridade for igual a, remove o pacoente da fila e mantem a sua posição 
+
+	// x - for que corre todo o vetor[50] ,
+	// x - verifica a ordem da fila e a prioridade, 
+	// - remove os 3 primeiros que achar com a prioridade amarela , se não achar ninguem , remove os pacientes com a prioridade verde, 
+
+
+// remove o paciente da fila geral de acordo com a sua prioridade
+	for(int p;p<tam; p ++){
+		if(cadastro[p].prioridade == 'a' || cadastro[p].prioridade == 'A'){
+			if(prioridade <= 3){
+					//remove os amarelos
+
+
+				// 1 - verde , 2 - verde , 3 amarelo - 4 verde 
+					
+				
+			}else{
+				//remove os verde
+				ini++;
+			}
+	}
+	}
+	
+// remove paciente da fila de acordo com a sua prioridade
 	if(tamfilaAmarela != 0){
 		if(prioridade < 3){
 				tamfilaAmarela--; 
 				prioridade++;
-		}
+		}	
 	}else if (tamfilaVerde != 0){
 		tamfilaVerde--;
-		
 		if(prioridade >=7){
 			prioridade=0;
 		}
@@ -110,21 +140,21 @@ void Remover(){
     if(tam == 0){
 		 FilaVazia();
 		}else{
-			printf(VERDE"--------- ✔ Paciente removido com sucesso ! :)---------- \n");
-			ini++;
+			printf(VERDE"--------- ✔ Paciente removido com sucesso ! 😁👍---------- \n");
 		}
 	menucontrole =1;
-}//VOID REMOVER
+}
 
+// ------------------------------- Pesquisar (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
 void Pesquisar(){
   menucontrole = 0;
-	printf(AZUL"<------------ Consultar Fila -------> \n" RESET);
+	printf(AZUL"<------------ 🔍Pesquisar pacientes -------> \n" RESET);
 	char escolha = ' ';
-	char nome[50];
-	char sobrenome[50];
+	char Nome[50]; // vetor para salvar o nome do paciente que sera lido abaixo e quesquisar o mesmo no vetor cadastro
+	char Sobrenome[50]; //vetor para salvar o sobrenome do paciente já existente que sera lido abaixo e irá pesquisar o mesmo no vetor cadastro
 	printf("Qual o nome do Paciente ?\n");
 	printf("Digite o nome: ");
-	scanf(" %s%s", nome , sobrenome);
+	scanf(" %s%s", Nome , Sobrenome);
 	printf("Qual a urgência do paciente ?\n");
 	printf("Digite a urgência: ");
 	printf(VERDE"V - Verde");
@@ -132,39 +162,48 @@ void Pesquisar(){
 	printf(AMARELO"A - Amarelo \n" RESET);
  	scanf(" %c", &escolha);
 
-  int i;
 	 	switch(escolha)
 		{
 			case 'V':
       case 'v':
 
-				for(i = ini-1; i < fim; i++){
-				if(cadastro[i].prioridade == 'v' || cadastro[i].prioridade == 'V'){
+				for(int v=0; v < fim; v++){
+				if(cadastro[v].prioridade == 'v' || cadastro[v].prioridade == 'V'){
+					if( ! strcmp (cadastro[v].nome, Nome)){
+						if( ! strcmp (cadastro[v].sobrenome, Sobrenome)){
+					printf(VERDE"------------------ Informações do paciente📝🧑🏻 -------------------- \n" RESET);
 							printf("Esse usuario esta como: \n");
 							printf(" Nome: ");
-					    printf("%s", cadastro[i].nome);
+					    printf("%s", cadastro[v].nome);
 							printf(" \n ");
 							printf("Sobrenome: ");
-					    printf("%s", cadastro[i].sobrenome);
+					    printf("%s", cadastro[v].sobrenome);
 							printf(" \n ");
 							printf("Prioridade: ");
-							printf("%c", cadastro[i].prioridade);
+							printf("%c", cadastro[v].prioridade);
 							printf(" \n ");
 							printf("Posição Geral: ");
-							printf("%d", cadastro[ini].posicaoGeral+1); 
+							printf("%d", cadastro[v].posicaoGeral+1); 
 							printf(" \n ");
 							printf("Posição por prioridade: ");
 							printf("%d", cadastro[ini].posicaoPrioridadeVerde+1);
 							printf(" \n ");
 							printf(VERDE"-------------------------------------- \n" RESET);
-				}else{error=1;}
+							achou++;
+						}
+					}
+				}
 			}//for
-				if(error == 1){ FilaVazia(); }break;
+				if(achou <= 0){ 
+					FilaVazia();
+					}
+				break;
 
       case 'A':
       	case 'a':
-        for(i = ini-1; i < fim; i++){
+        for(int i = 0; i < fim; i++){
 				if(cadastro[i].prioridade == 'a' || cadastro[i].prioridade == 'A'){
+				printf(AMARELO"------------------ Informações do paciente📝🧑🏻 -------------------- \n" RESET);
 				printf("Esse usuario esta como: \n");
 				printf(" Nome: ");
 				printf("%s", cadastro[i].nome);
@@ -182,110 +221,137 @@ void Pesquisar(){
 				printf("%d", cadastro[ini].posicaoPrioridadeAmarela+1); // criar um for pra mudar o valor do vetor
 				printf(" \n ");
 				printf(AMARELO"-------------------------------------- \n" RESET);
+					achou++;
 					}//IF
-        else{
-					error=1;}
 			}//FOR
-				if(error ==1){
- FilaVazia(); }beak;	
+				if(achou <= 0){
+ 				FilaVazia(); 
+					}
+					break;	
       default:Error();}//SWITCH
 		menucontrole =1;
 }//VOID PESQUISAR
-	
+// -------------------------- Ver Fila Completa (Corre toda a fila e mostra todos os pacientes, nome , sobrenome , e a sua prioridade dentro da fila geral) -----------------
 void VfilaCompleta(){
 	int i = ini;
 	int indice=0;
   menucontrole = 0;
-	printf(AZUL"--------- Visualizar Fila Completa ---------- \n" RESET);
-	if(tam == 0){ FilaVazia(); }else{
-			do{ printf(" %d" , indice+1); printf(" - ");
-					printf("Nome: "); printf("%s" , cadastro[i].nome);printf(" ");
-					printf("%s" , cadastro[i].sobrenome);printf(" ");
-					printf("Prioridade: ");printf("%c" , cadastro[i].prioridade);printf(" ");
+	printf(AZUL"--------- 📋Visualizar Fila Completa ---------- \n" RESET);
+	if(tam == 0){ 
+    FilaVazia(); 
+    }else{
+			do{ 
+				if(indice <9){
+					printf(" 0%d" , indice+1); 
+				}else if( indice >=9){
+				printf(" %d" , indice+1); 
+				}
+					printf(" - ");
+					printf("Nome: "); 
+					printf("%s" , cadastro[i].nome);
+					printf(" | ");
+					printf("%s" , cadastro[i].sobrenome);
+          printf(" | ");
+					printf("Prioridade: ");
+          printf("%c" , cadastro[i].prioridade);
+				printf(" | ");
+			printf("Posição da fila por prioridade: ");
+				if(cadastro[i].prioridade == 'v' || cadastro[i].prioridade == 'V'){
+          printf("%c" , cadastro[i].posicaoPrioridadeVerde);
+					}else{
+					 printf("%c" , cadastro[i].prioridade == 'a' || cadastro[i].prioridade 'A');
+					}
+          printf(" \n");
 					i++; indice++;
 				}while(i<50);
-		} menucontrole =1;}//void VfilaCompleta
+		} menucontrole =1;
+  }
 
+// -------------- Ver Fila por tipo de urgencia|Prioridade (corre toda a fila e mostra apenas os pacientes de acordo com a prioridade escolhida no sistema) -----------------
 void VfilaTipoUrgencia(){
-  menucontrole = 0;
-	int i = tam;
 	int indice=0;
-	printf(AZUL"--------- Visualizar Tipo de Urgência ---------- \n" RESET);
+	printf(AZUL"--------- 📋Visualizar Tipo de Urgência ---------- \n" RESET);
 	char escolha = ' ';
 	char nome = ' ';
 	printf("Qual a urgência do paciente ?\n");
 	printf(VERDE"V - Verde");
- rintf(RESET" | ");
- rintf(AMARELO"A - Amarelo \n" RESET);
+  printf(RESET" | ");
+  printf(AMARELO"A - Amarelo \n" RESET);
 	printf("Digite a urgência: ");
- canf(" %c", &escolha);
+  scanf(" %c", &escolha);
 	 	switch(escolha){
-			case 'V':
+			
+      case 'V':
       case 'v':
-        printf(VERDE"--------- Prioridade Verde ---------- \n" RESET);
-        if(tam == 0){ FilaVazia(); }else{
-					for(int f=0; f<50; f++){
-					if(cadastro[i].prioridade == 'v' || cadastro[i].prioridade == 'V'){
-						printf("%d" , indice+1); printf(" - ");
-						printf("%s" , cadastro[i].nome); printf(" - ");
-						printf("%s" , cadastro[i].sobrenome) ;printf("\n");
+        printf(VERDE"--------- 🟢Prioridade Verde🟢 ---------- \n" RESET);
+        if(tamfilaVerde == 0){ 
+					FilaVazia();
+					}else{
+					for(int f=0; f < tamfilaVerde+1; f++){
+					if(cadastro[f].prioridade == 'v' || cadastro[f].prioridade == 'V'){
+						printf("%d" , indice+1); 
+            printf(" - ");
+						printf("%s" , cadastro[f].nome); 
+            printf(" - ");
+						printf("%s" , cadastro[f].sobrenome);
+            printf("\n");
 						indice++;
- 
+					}
+				}
+			break;
 
-
- reak;
-
-			      case 'A':
+			case 'A':
       case 'a':
-        printf(AMARELO"--------- Prioridade Amarela ---------- \n" RESET);
-				if(tam == 0){ FilaVazia(); }else{
-					for(int t=0; t<50;t++){
-						if(cadastro[i].prioridade == 'a' || cadastro[i].prioridade == 'A'){
+        printf(AMARELO"--------- 🟡Prioridade Amarela🟡 ---------- \n" RESET);
+				if(tamfilaAmarela == 0){
+					FilaVazia(); 
+					}
+				else
+        {
+					for(int t=0; t < tamfilaAmarela+1; t++){
+						if(cadastro[t].prioridade == 'a' || cadastro[t].prioridade == 'A'){
 						printf("%d" , indice+1);
 						printf(" - ");
-						printf("%s" , cadastro[i].nome); 
+						printf("%s" , cadastro[t].nome); 
 						printf(" - ");
-						printf("%s" , cadastro[i].sobrenome);
+						printf("%s" , cadastro[t].sobrenome);
 						printf("\n");
 						indice++;
 						}
 					}
 				}
-					break;
-			
-      default:
-				printf(VERMELHO"--------- Erro ❗---------- \n" RESET);
-				printf(" ❌ Nosso sistema só aceita A ou V como níveis de prioridade! \n");
-				printf("-------------------------------------- \n" );
-		}//Switch
-  menucontrole =1;
-  }//void VfilaTipoUrgencia
-	
+				break;
+      	default:
+				Error();
+		}
+  } menucontrole =1;
+}
+// ----------------------------------- Consultar Fila (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
 void ConsultarFila(){
   int menucontrole = 0;
-	printf(AZUL"--------- Consultar Fila ---------- \n" RESET);
+	printf(AZUL"--------- 📋Consultar Fila ---------- \n" RESET);
 	printf("Tamanho da fila: ");
 	printf("%d" , tam);
 	printf(" \n");
 	printf("Posições ocupadas: ");
-	printf("%d" , tam);
+	printf("%d" , tam); 
 	printf(" \n");
 	printf("Posições livres: ");
-	printf("%d" , 50 - tam);
+	printf("%d" , 50 - tam); 
 	printf(" \n");
 	menucontrole =1;
 }//Void ConsultarFila
-
+// ------------------------- Menu da Aplicação (Faz o rotiamento da aplicação , o menu que gerencia as rotas e chama as demais funções da aplçicação) -----------------
 void Menu(){
   int i;
 	do{
 		printf(AZUL"------------------ Menu ---------------- \n" RESET);
-		printf("1 - Cadastrar Paciente \n");
-		printf("2 - Remover Paciente \n");
-		printf("3 - Pesquisar Paciente por nível de urgência \n");
-		printf("4 - Visualizar fila completa \n");
- 	 	printf("5 - Visualizar fila por tipo de urgência \n");
-  	printf("6 - Consultar situação da fila \n");
+		printf("1 - 📝Cadastrar Paciente \n");
+		printf("2 - 🚶🏻‍♂️Remover Paciente \n");
+		printf("3 - 🔍Pesquisar Paciente por nível de urgência \n");
+		printf("4 - 📋Visualizar fila completa \n");
+ 	 	printf("5 - 📋Visualizar fila por tipo de urgência \n");
+  	printf("6 - 📋Consultar situação da fila \n");
 		printf("Digite uma Opção: ");
 		scanf("%d", &i);
 		printf(AZUL"---------------------------------------- \n" RESET);
@@ -298,9 +364,9 @@ void Menu(){
       case 6:ConsultarFila(); break;
       default: Error();}
 	}while(menucontrole ==1); 
-}//Void Menu
-
-int main(void){ 
+}
+// -------------------------------- Main (classe principal da nossa aplicação, ela que sera chamada quando o código rodar) -----------------
+int main(){ 
 	setlocale (LC_ALL,"portuguese"); // define o idioma do projeto como portugês brasil
 	Menu(); // chama o menu
 }

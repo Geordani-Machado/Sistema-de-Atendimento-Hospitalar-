@@ -8,7 +8,15 @@ Projeto desenvolvido durante graduação na cadeira de Estrutura de Dados
  - mostra pacientes por níveis de prioridade , por posição geral da fila e por posição de acordo com a sua prioridade no sistema.
   - sistema remove da fila  primeiro os pacientes como prioridade alta (prioridade amarela), para posteriormente remover os pacientes com prioridade normal(prioridade verde).
    <br/> 
-   
+
+- # implementação e requisitos do sistema
+- [x] Cria um menu
+- [x] Cadastrar pacientes por noveis de prioridade
+- [ ] Remover pacientes da fila de acordo com o nivel de prioridade seguindo a lógica FIFO
+- [x] visualizar fila completa
+- [x] visualizar fila por niveis de prioridade
+- [x] verificar estado da fila
+- [x] Pesquisar pacientes na fila de acordo com a sua prioridade na fila geral
 
 # Sistemas de cores:
  - VERDE = "\x1b[32m"
