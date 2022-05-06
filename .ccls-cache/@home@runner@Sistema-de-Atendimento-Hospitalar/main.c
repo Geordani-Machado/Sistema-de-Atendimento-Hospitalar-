@@ -70,8 +70,9 @@ void Cadastrar(){
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
 				cadastro[i].prioridade = 'V';
+				tamfilaVerde = tamfilaVerde +1;
 				cadastro[i].posicaoPrioridadeVerde = tamfilaVerde;
-				tamfilaVerde++;
+				
 				break;
       
       case 'A':
@@ -83,8 +84,8 @@ void Cadastrar(){
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
 				cadastro[i].prioridade = 'A';
+				tamfilaAmarela = tamfilaAmarela +1;
 				cadastro[i].posicaoPrioridadeAmarela = tamfilaAmarela;
-				tamfilaAmarela++;
       break;
       default:
 				Error();
@@ -249,18 +250,12 @@ void VfilaCompleta(){
 					printf(" - ");
 					printf("Nome: "); 
 					printf("%s" , cadastro[i].nome);
-					printf(" | ");
+					printf(" ");
 					printf("%s" , cadastro[i].sobrenome);
           printf(" | ");
 					printf("Prioridade: ");
           printf("%c" , cadastro[i].prioridade);
-				printf(" | ");
-			printf("Posição da fila por prioridade: ");
-				if(cadastro[i].prioridade == 'v' || cadastro[i].prioridade == 'V'){
-          printf("%c" , cadastro[i].posicaoPrioridadeVerde);
-					}else{
-					 printf("%c" , cadastro[i].prioridade == 'a' || cadastro[i].prioridade 'A');
-					}
+					printf(" | ");
           printf(" \n");
 					i++; indice++;
 				}while(i<50);
@@ -287,7 +282,7 @@ void VfilaTipoUrgencia(){
         if(tamfilaVerde == 0){ 
 					FilaVazia();
 					}else{
-					for(int f=0; f < tamfilaVerde+1; f++){
+					for(int f=0; f < tamfilaVerde+2; f++){
 					if(cadastro[f].prioridade == 'v' || cadastro[f].prioridade == 'V'){
 						printf("%d" , indice+1); 
             printf(" - ");
@@ -308,7 +303,7 @@ void VfilaTipoUrgencia(){
 					}
 				else
         {
-					for(int t=0; t < tamfilaAmarela+1; t++){
+					for(int t=0; t < tamfilaAmarela+2; t++){
 						if(cadastro[t].prioridade == 'a' || cadastro[t].prioridade == 'A'){
 						printf("%d" , indice+1);
 						printf(" - ");
