@@ -20,9 +20,12 @@ struct Paciente{
   int posicaoGeral; // salva a posição do paciente da fila por ordem de chegada.
 	int posicaoPrioridadeVerde;// salva a posição do paciente p ela prioridade Verde
 	int posicaoPrioridadeAmarela;// salva a posição do paciente pela prioridade Amarela
+	struct Paciente *ant; // pegar o paciente anterior
+	struct Paciente *prox; // pegar o proximo paciente
 } ;
+
 typedef struct Paciente Paciente;
-Paciente cadastro[50]; //vetor | dividir ele 2/ fila 0 - 25 | 26 -50
+Paciente cadastro[50]; 
 
 // sistema de cores
 #define VERDE "\x1b[32m"
@@ -42,7 +45,55 @@ void FilaVazia(){
 	printf("-------------------------------------\n");
 }
 
-void Cadastrar(){
+/*void denqueue (){
+int indice;
+int i;
+
+  for (i = indice; i < tam; i++) {
+          cadastro[i] = cadastro[i + 1];
+        }
+	tam--;
+	
+}
+*/
+
+int j;
+Paciente filaReorganizada[50];
+
+void Reorganizar(){ // reorganizar a fila definindo as prioridades para frente
+
+	for(int r=0; r <tam; r++){
+
+		if(cadastro[r].prioridade == 'a' || cadastro[r].prioridade == 'A'){
+		 if(prioridade <= 3){ // colocar na fila primeiro 3 pacientes com prioridade amarela
+
+						//percorre a fila e realoca os pacientes com prioridade amarela para frente dos pacientes com prioridade verde.
+							filaReorganizada[j] = cadastro[r];
+					    
+					} prioridade++; // controle a prioridade, somente 3 pacientes com prioridade são chamados antes dos pacientes com prioridade verde, apos isso são chamados 4 pacientes com prioridade verde
+		 }else {
+
+			 if(cadastro[r].prioridade == 'v' || cadastro[r].prioridade == 'V'){
+        if(prioridade >=7){  // controla a prioridade, remove 3 amarelos e 4 verdes, apos isso prioridade volta pro inicio
+				 filaReorganizada[j] = cadastro[r];
+          
+       } prioridade = 0;
+				 
+				 
+				 }
+       }
+
+		j++;
+	}
+	
+/*
+	for(int g=0; g<50; g++){
+		cadastro[g] = filaReorganizada[g];
+	}
+	*/
+}
+	
+void Cadastrar(int *ini, int *fim){
 	int menucontrole = 0;
 	char escolha = ' ';
 	printf("--------- 📝Cadastro ---------- \n");
@@ -72,6 +123,7 @@ void Cadastrar(){
 				cadastro[i].prioridade = 'V';
 				tamfilaVerde = tamfilaVerde +1;
 				cadastro[i].posicaoPrioridadeVerde = tamfilaVerde;
+				cadastro[i].posicaoGeral = tam;
 				
 				break;
       
@@ -86,46 +138,22 @@ void Cadastrar(){
 				cadastro[i].prioridade = 'A';
 				tamfilaAmarela = tamfilaAmarela +1;
 				cadastro[i].posicaoPrioridadeAmarela = tamfilaAmarela;
+        cadastro[i].posicaoGeral = tam;
+					
       break;
       default:
 				Error();
-		}
+		} //se inicio da fila for igual a A, prioridade será chamada primeiro. Se proximo da fila for v, reorganiza colocando prioridade a até 3, após isso será chamado os pacientes com prioridade v até ser cadastrado outro paciente com prioridade a
+    
 	tam = tam +1; 
 	i = i+1;
+	Reorganizar();
 }//VOID CADASTRAR
 
 void Remover(){
-  menucontrole = 0;
-  char escolha = ' ';
-	char nome = ' ';
-	printf("--------- 🚶🏻‍♂️Remover Paciente da Fila ---------- \n");
-
-	// a cada 3 pacientes com prioridade amarela o sistema remove 4 com prioridade verde
-
-	// se a prioridade for igual a, remove o pacoente da fila e mantem a sua posição 
-
-	// x - for que corre todo o vetor[50] ,
-	// x - verifica a ordem da fila e a prioridade, 
-	// - remove os 3 primeiros que achar com a prioridade amarela , se não achar ninguem , remove os pacientes com a prioridade verde, 
-
-
-// remove o paciente da fila geral de acordo com a sua prioridade
-	for(int p;p<tam; p ++){
-		if(cadastro[p].prioridade == 'a' || cadastro[p].prioridade == 'A'){
-			if(prioridade <= 3){
-					//remove os amarelos
-
-
-				// 1 - verde , 2 - verde , 3 amarelo - 4 verde 
-					
-				
-			}else{
-				//remove os verde
-				ini++;
-			}
-	}
-	}
 	
+  printf("--------- 🚶Remover Paciente da Fila ---------- \n");
+	ini++;
 // remove paciente da fila de acordo com a sua prioridade
 	if(tamfilaAmarela != 0){
 		if(prioridade < 3){
@@ -146,7 +174,7 @@ void Remover(){
 	menucontrole =1;
 }
 
-// ------------------------------- Pesquisar (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
+// -------------------- Pesquisar (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
 void Pesquisar(){
   menucontrole = 0;
 	printf(AZUL"<------------ 🔍Pesquisar pacientes -------> \n" RESET);
@@ -234,7 +262,8 @@ void Pesquisar(){
 }//VOID PESQUISAR
 // -------------------------- Ver Fila Completa (Corre toda a fila e mostra todos os pacientes, nome , sobrenome , e a sua prioridade dentro da fila geral) -----------------
 void VfilaCompleta(){
-	int i = ini;
+
+  int i = ini;
 	int indice=0;
   menucontrole = 0;
 	printf(AZUL"--------- 📋Visualizar Fila Completa ---------- \n" RESET);
@@ -257,8 +286,10 @@ void VfilaCompleta(){
           printf("%c" , cadastro[i].prioridade);
 					printf(" | ");
           printf(" \n");
-					i++; indice++;
-				}while(i<50);
+					i++; 
+					indice++;
+				}while(i<tam);
+    Reorganizar();
 		} menucontrole =1;
   }
 
@@ -321,7 +352,7 @@ void VfilaTipoUrgencia(){
 		}
   } menucontrole =1;
 }
-// ----------------------------------- Consultar Fila (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
+// --------------------- Consultar Fila (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
 void ConsultarFila(){
   int menucontrole = 0;
 	printf(AZUL"--------- 📋Consultar Fila ---------- \n" RESET);
@@ -342,7 +373,7 @@ void Menu(){
 	do{
 		printf(AZUL"------------------ Menu ---------------- \n" RESET);
 		printf("1 - 📝Cadastrar Paciente \n");
-		printf("2 - 🚶🏻‍♂️Remover Paciente \n");
+		printf("2 - 🚶Remover Paciente \n");
 		printf("3 - 🔍Pesquisar Paciente por nível de urgência \n");
 		printf("4 - 📋Visualizar fila completa \n");
  	 	printf("5 - 📋Visualizar fila por tipo de urgência \n");
@@ -360,7 +391,7 @@ void Menu(){
       default: Error();}
 	}while(menucontrole ==1); 
 }
-// -------------------------------- Main (classe principal da nossa aplicação, ela que sera chamada quando o código rodar) -----------------
+// ----------------- Main (classe principal da nossa aplicação, ela que sera chamada quando o código rodar) -----------------
 int main(){ 
 	setlocale (LC_ALL,"portuguese"); // define o idioma do projeto como portugês brasil
 	Menu(); // chama o menu
