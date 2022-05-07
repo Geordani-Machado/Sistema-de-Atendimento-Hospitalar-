@@ -35,7 +35,6 @@ Paciente cadastro[50];
 #define VERMELHO "\x1b[31m"
 #define AZUL "\x1b[34m"
 #define RESET "\x1b[0m"
-#define NULL ((void*)0)
 
 void Error(){ //mensagem de erro se a opção estiver errada
 	printf(VERMELHO"---------- Erro ❗ ---------- \n");
@@ -48,29 +47,7 @@ void FilaVazia(){
 	printf("-------------------------------------\n");
 }
 
-/*
-void Reorganizar(){ // reorganizar a fila definindo as prioridades para frente
-int t;
-		for(int r=0; r<50;r++){if(prioridade <=3){
-			if(cadastro[r].prioridade == 'a' || cadastro[r].prioridade == 'A'){
-				cadastro[r] = cadastro[t];
-				t++;
-			}
-		}else if(prioridade <=7){
 
-			//se a prioridade for verde , a gente cadstra normal o paciente no final da fila , caso contrario a gente verifica o final da fila amarela (iniAmarelo , fim amarelo , ini verde , fim verde) , movimenta toda a fila verde +1 , e adiciona o amarelo no lucar do inicio da fila verde , e move o inicio da fila verde +1 
-
-			// 1 - a , 2- a ,5 - a , 3 - v , 4 v 
-			cadastro[r] = cadastro[r+1];
-			
-		}else{
-			prioridade=0;
-		}
-	}
-	
-	}  
-*/
-	
 void Cadastrar(){
 	int menucontrole = 0;
 	char escolha = ' ';
@@ -129,7 +106,6 @@ void Cadastrar(){
 	tam = tam +1; 
 	i = i+1;
 	fim++;
-	//Reorganizar();
 }//VOID CADASTRAR
 
 void Remover(){
@@ -270,7 +246,7 @@ void VfilaCompleta(){
           printf(" \n");
 					i++; 
 					indice++;
-				}while(i<tam);
+				}while(i<50);
    // Reorganizar();
 		} menucontrole =1;
   }
