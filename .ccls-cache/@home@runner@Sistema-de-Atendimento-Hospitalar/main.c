@@ -93,7 +93,7 @@ void Reorganizar(){ // reorganizar a fila definindo as prioridades para frente
 	*/
 }
 	
-void Cadastrar(int *ini, int *fim){
+void Cadastrar(){
 	int menucontrole = 0;
 	char escolha = ' ';
 	printf("--------- 📝Cadastro ---------- \n");
@@ -114,7 +114,7 @@ void Cadastrar(int *ini, int *fim){
 		{
 			case 'V':
       	case 'v':
-				printf(VERDE"--------- 🟢Prioridade Verde🟢 ---------- \n"RESET);
+				printf(VERDE"--------- 🟢 Prioridade Verde 🟢 ---------- \n"RESET);
 				printf(VERDE"Prioridade definida como Verde! \n"RESET);
 				printf(VERDE"-------------------------------------- \n \n \n" RESET);
 				printf(VERDE"--------- Sucesso ! ---------- \n");
@@ -129,7 +129,7 @@ void Cadastrar(int *ini, int *fim){
       
       case 'A':
       	case 'a':
-        printf(AMARELO"--------- 🟡Prioridade Amarela🟡 ---------- \n" RESET);
+        printf(AMARELO"--------- 🟡 Prioridade Amarela 🟡 ---------- \n" RESET);
 				printf(AMARELO"Prioridade definida como Amarela! \n" RESET);
 				printf(AMARELO"-------------------------------------- \n \n \n" RESET);
 				printf(VERDE"--------- Sucesso ! ---------- \n");
