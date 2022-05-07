@@ -6,12 +6,14 @@
 
 int menucontrole = 1;
 int tam;
-int ini,fim=49;
+int ini,fim;
 int tamfilaAmarela = 0;
 int tamfilaVerde = 0;
 int achou;
 int i=0;
 int prioridade;
+int iniAmarelo, fimAmarelo;
+int iniVerde, fimVerde;
 
 struct Paciente{
   char nome[50];//salva o nome do paciente na fila
@@ -33,6 +35,7 @@ Paciente cadastro[50];
 #define VERMELHO "\x1b[31m"
 #define AZUL "\x1b[34m"
 #define RESET "\x1b[0m"
+#define NULL ((void*)0)
 
 void Error(){ //mensagem de erro se a opção estiver errada
 	printf(VERMELHO"---------- Erro ❗ ---------- \n");
@@ -45,53 +48,28 @@ void FilaVazia(){
 	printf("-------------------------------------\n");
 }
 
-/*void denqueue (){
-int indice;
-int i;
-
-  for (i = indice; i < tam; i++) {
-          cadastro[i] = cadastro[i + 1];
-        }
-	tam--;
-	
-}
-*/
-
-int j;
-Paciente filaReorganizada[50];
-
-void Reorganizar(){ // reorganizar a fila definindo as prioridades para frente
-
-	for(int r=0; r <tam; r++){
-
-		if(cadastro[r].prioridade == 'a' || cadastro[r].prioridade == 'A'){
-		 if(prioridade <= 3){ // colocar na fila primeiro 3 pacientes com prioridade amarela
-
-						//percorre a fila e realoca os pacientes com prioridade amarela para frente dos pacientes com prioridade verde.
-							filaReorganizada[j] = cadastro[r];
-					    
-					} prioridade++; // controle a prioridade, somente 3 pacientes com prioridade são chamados antes dos pacientes com prioridade verde, apos isso são chamados 4 pacientes com prioridade verde
-		 }else {
-
-			 if(cadastro[r].prioridade == 'v' || cadastro[r].prioridade == 'V'){
-        if(prioridade >=7){  // controla a prioridade, remove 3 amarelos e 4 verdes, apos isso prioridade volta pro inicio
-				 filaReorganizada[j] = cadastro[r];
-          
-       } prioridade = 0;
-				 
-				 
-				 }
-       }
-
-		j++;
-	}
-	
 /*
-	for(int g=0; g<50; g++){
-		cadastro[g] = filaReorganizada[g];
+void Reorganizar(){ // reorganizar a fila definindo as prioridades para frente
+int t;
+		for(int r=0; r<50;r++){if(prioridade <=3){
+			if(cadastro[r].prioridade == 'a' || cadastro[r].prioridade == 'A'){
+				cadastro[r] = cadastro[t];
+				t++;
+			}
+		}else if(prioridade <=7){
+
+			//se a prioridade for verde , a gente cadstra normal o paciente no final da fila , caso contrario a gente verifica o final da fila amarela (iniAmarelo , fim amarelo , ini verde , fim verde) , movimenta toda a fila verde +1 , e adiciona o amarelo no lucar do inicio da fila verde , e move o inicio da fila verde +1 
+
+			// 1 - a , 2- a ,5 - a , 3 - v , 4 v 
+			cadastro[r] = cadastro[r+1];
+			
+		}else{
+			prioridade=0;
+		}
 	}
-	*/
-}
+	
+	}  
+*/
 	
 void Cadastrar(){
 	int menucontrole = 0;
@@ -121,7 +99,8 @@ void Cadastrar(){
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
 				cadastro[i].prioridade = 'V';
-				tamfilaVerde = tamfilaVerde +1;
+				iniVerde++;
+				tamfilaVerde = iniVerde;
 				cadastro[i].posicaoPrioridadeVerde = tamfilaVerde;
 				cadastro[i].posicaoGeral = tam;
 				
@@ -136,24 +115,26 @@ void Cadastrar(){
 				printf(VERDE"✔ Conta criada com sucesso! \n");
 				printf(VERDE"-------------------------------------- \n" RESET);
 				cadastro[i].prioridade = 'A';
-				tamfilaAmarela = tamfilaAmarela +1;
+				iniAmarelo++;
+				tamfilaAmarela = iniAmarelo;
 				cadastro[i].posicaoPrioridadeAmarela = tamfilaAmarela;
         cadastro[i].posicaoGeral = tam;
 					
       break;
       default:
 				Error();
-		} //se inicio da fila for igual a A, prioridade será chamada primeiro. Se proximo da fila for v, reorganiza colocando prioridade a até 3, após isso será chamado os pacientes com prioridade v até ser cadastrado outro paciente com prioridade a
+		} 
+  //se inicio da fila for igual a A, prioridade será chamada primeiro. Se proximo da fila for v, reorganiza colocando prioridade a até 3, após isso será chamado os pacientes com prioridade v até ser cadastrado outro paciente com prioridade a
     
 	tam = tam +1; 
 	i = i+1;
-	Reorganizar();
+	fim++;
+	//Reorganizar();
 }//VOID CADASTRAR
 
 void Remover(){
-	
   printf("--------- 🚶Remover Paciente da Fila ---------- \n");
-	ini++;
+		ini++;
 // remove paciente da fila de acordo com a sua prioridade
 	if(tamfilaAmarela != 0){
 		if(prioridade < 3){
@@ -172,6 +153,7 @@ void Remover(){
 			printf(VERDE"--------- ✔ Paciente removido com sucesso ! 😁👍---------- \n");
 		}
 	menucontrole =1;
+	//Reorganizar();
 }
 
 // -------------------- Pesquisar (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
@@ -196,7 +178,7 @@ void Pesquisar(){
 			case 'V':
       case 'v':
 
-				for(int v=0; v < fim; v++){
+				for(int v=0; v < tam; v++){
 				if(cadastro[v].prioridade == 'v' || cadastro[v].prioridade == 'V'){
 					if( ! strcmp (cadastro[v].nome, Nome)){
 						if( ! strcmp (cadastro[v].sobrenome, Sobrenome)){
@@ -230,7 +212,7 @@ void Pesquisar(){
 
       case 'A':
       	case 'a':
-        for(int i = 0; i < fim; i++){
+        for(int i = 0; i < tam; i++){
 				if(cadastro[i].prioridade == 'a' || cadastro[i].prioridade == 'A'){
 				printf(AMARELO"------------------ Informações do paciente📝🧑🏻 -------------------- \n" RESET);
 				printf("Esse usuario esta como: \n");
@@ -289,7 +271,7 @@ void VfilaCompleta(){
 					i++; 
 					indice++;
 				}while(i<tam);
-    Reorganizar();
+   // Reorganizar();
 		} menucontrole =1;
   }
 
