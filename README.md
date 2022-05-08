@@ -24,7 +24,7 @@ Projeto desenvolvido durante graduação na cadeira de Estrutura de Dados
  - VERMELHO = "\x1b[31m"
  - AZUL = "\x1b[34m"
  - RESET = "\x1b[0m"
-#
+
 
 Projeto Licença MIT.   
 

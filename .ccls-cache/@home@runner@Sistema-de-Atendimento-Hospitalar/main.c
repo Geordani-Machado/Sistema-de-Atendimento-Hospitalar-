@@ -27,7 +27,7 @@ struct Paciente{
 } ;
 
 typedef struct Paciente Paciente;
-Paciente cadastro[50]; 
+Paciente cadastro[50] , aux; 
 
 // sistema de cores
 #define VERDE "\x1b[32m"
@@ -47,6 +47,28 @@ void FilaVazia(){
 	printf("-------------------------------------\n");
 }
 
+void Reorganizar(){
+
+	for(int i=0 ; i<49; i++){
+			for(int j=i+1; j<fim; j++){
+
+
+					if(prioridade<=3){
+					if(cadastro[i].prioridade=='V' || cadastro[i].prioridade=='v'){
+							aux = cadastro[i];
+							cadastro[i] = cadastro[j];
+							cadastro[j] = aux;
+	
+							prioridade++;
+					}
+				}
+			}
+	}
+
+	if(prioridade >=7){
+		prioridade=0;
+	}
+}
 
 void Cadastrar(){
 	int menucontrole = 0;
@@ -101,18 +123,24 @@ void Cadastrar(){
       default:
 				Error();
 		} 
-  //se inicio da fila for igual a A, prioridade será chamada primeiro. Se proximo da fila for v, reorganiza colocando prioridade a até 3, após isso será chamado os pacientes com prioridade v até ser cadastrado outro paciente com prioridade a
+  
     
 	tam = tam +1; 
 	i = i+1;
 	fim++;
+	Reorganizar();
 }//VOID CADASTRAR
 
 void Remover(){
   printf("--------- 🚶Remover Paciente da Fila ---------- \n");
-		ini++;
-// remove paciente da fila de acordo com a sua prioridade
-	if(tamfilaAmarela != 0){
+
+	
+    if(ini == fim){
+		 FilaVazia();
+		}else{
+			ini++;
+
+			if(tamfilaAmarela != 0){ 
 		if(prioridade < 3){
 				tamfilaAmarela--; 
 				prioridade++;
@@ -121,15 +149,13 @@ void Remover(){
 		tamfilaVerde--;
 		if(prioridade >=7){
 			prioridade=0;
-		}
+		} 
 	}
-    if(tam == 0){
-		 FilaVazia();
-		}else{
-			printf(VERDE"--------- ✔ Paciente removido com sucesso ! 😁👍---------- \n");
-		}
+		
+	printf(VERDE"--------- ✔ Paciente removido com sucesso ! 😁👍---------- \n");
 	menucontrole =1;
 	//Reorganizar();
+	}
 }
 
 // -------------------- Pesquisar (Posições Ocupadadas , Posições Livres , Tamanho da fila) -----------------
@@ -202,10 +228,10 @@ void Pesquisar(){
 				printf("%c", cadastro[i].prioridade);
 				printf(" \n ");
 				printf("Posição Geral: ");
-				printf("%d", cadastro[ini].posicaoGeral +1); // criar um for pra mudar o valor do vetor
+				printf("%d", cadastro[ini].posicaoGeral +1); 
 				printf(" \n ");
 				printf("Posição por prioridade: ");
-				printf("%d", cadastro[ini].posicaoPrioridadeAmarela+1); // criar um for pra mudar o valor do vetor
+				printf("%d", cadastro[ini].posicaoPrioridadeAmarela+1); 
 				printf(" \n ");
 				printf(AMARELO"-------------------------------------- \n" RESET);
 					achou++;
@@ -225,7 +251,7 @@ void VfilaCompleta(){
 	int indice=0;
   menucontrole = 0;
 	printf(AZUL"--------- 📋Visualizar Fila Completa ---------- \n" RESET);
-	if(tam == 0){ 
+	if(ini == fim){ 
     FilaVazia(); 
     }else{
 			do{ 
@@ -247,7 +273,7 @@ void VfilaCompleta(){
 					i++; 
 					indice++;
 				}while(i<50);
-   // Reorganizar();
+   
 		} menucontrole =1;
   }
 
